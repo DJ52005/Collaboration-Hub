@@ -1,55 +1,81 @@
 const express = require("express");
 
-const Message = require("../models/Message");
-
-const protect = require("../middleware/authMiddleware");
-
 const router = express.Router();
 
+const Message = require("../models/Message");
 
-// GET PROJECT MESSAGES
-router.get("/:projectId", protect, async (req, res) => {
+const authMiddleware = require("../middleware/authMiddleware");
 
-  try {
 
-    const messages = await Message.find({
-      project: req.params.projectId,
-    })
-      .populate("sender", "name")
-      .sort({ createdAt: 1 });
+/*
+=====================================
+SAVE MESSAGE
+=====================================
+*/
 
-    res.status(200).json(messages);
+router.post(
+  "/save",
+  authMiddleware,
+  async (req, res) => {
 
-  } catch (error) {
+    try {
 
-    res.status(500).json({
-      message: error.message,
-    });
+      const { project, content } = req.body;
 
+      const message = await Message.create({
+        project,
+        sender: req.user.id,
+        content,
+      });
+
+      const populatedMessage =
+        await Message.findById(message._id)
+          .populate("sender", "name");
+
+      res.status(201).json(
+        populatedMessage
+      );
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      });
+
+    }
   }
-});
-// SAVE MESSAGE
-router.post("/save", protect, async (req, res) => {
+);
 
-  try {
 
-    const { project, content } = req.body;
+/*
+=====================================
+GET PROJECT MESSAGES
+=====================================
+*/
 
-    const message = await Message.create({
-      sender: req.user,
-      project,
-      content,
-    });
+router.get(
+  "/:projectId",
+  authMiddleware,
+  async (req, res) => {
 
-    res.status(201).json(message);
+    try {
 
-  } catch (error) {
+      const messages = await Message.find({
+        project: req.params.projectId,
+      })
+        .populate("sender", "name")
+        .sort({ createdAt: 1 });
 
-    res.status(500).json({
-      message: error.message,
-    });
+      res.json(messages);
 
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      });
+
+    }
   }
-});
+);
 
 module.exports = router;

@@ -1,33 +1,39 @@
 const jwt = require("jsonwebtoken");
 
-const protect = (req, res, next) => {
+const authMiddleware =
+  async (req, res, next) => {
 
-  const token = req.headers.authorization;
+    try {
 
-  if (!token) {
-    return res.status(401).json({
-      message: "Not authorized",
-    });
-  }
+      const token =
+        req.headers.authorization?.split(" ")[1];
 
-  try {
+      if (!token) {
 
-    const decoded = jwt.verify(
-      token.split(" ")[1],
-      process.env.JWT_SECRET
-    );
+        return res.status(401).json({
+          message: "No token provided",
+        });
 
-    req.user = decoded.id;
+      }
 
-    next();
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
 
-  } catch (error) {
+      req.user = {
+        id: decoded.id,
+      };
 
-    res.status(401).json({
-      message: "Invalid token",
-    });
+      next();
 
-  }
-};
+    } catch (error) {
 
-module.exports = protect;
+      res.status(401).json({
+        message: "Invalid token",
+      });
+
+    }
+  };
+
+module.exports = authMiddleware;

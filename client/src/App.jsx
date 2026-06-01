@@ -6,6 +6,12 @@ import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import CreateProject from "./pages/CreateProject";
 import Chat from "./pages/Chat";
+import Students from "./pages/Students";
+import ProjectDetails from "./pages/ProjectDetails";
+import MyProjects from "./pages/MyProjects";
+import Hackathons from "./pages/Hackathons";
+import Profile from "./pages/Profile";
+import EditProject from "./pages/EditProject";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -63,13 +69,62 @@ function App() {
 
         {/* CHAT */}
         <Route
-          path="/chat/:projectId"
+          path="/chat"
           element={
             <ProtectedRoute>
               <Chat />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/students"
+          element={
+            <ProtectedRoute>
+              <Students />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projects/:id"
+          element={
+            <ProtectedRoute>
+              <ProjectDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-projects"
+          element={
+            <ProtectedRoute>
+              <MyProjects />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hackathons"
+          element={
+            <ProtectedRoute>
+              <Hackathons />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+  path="/edit-project/:id"
+  element={
+    <ProtectedRoute>
+      <EditProject />
+    </ProtectedRoute>
+  }
+/>
+
 
 
         {/* DEFAULT ROUTE */}

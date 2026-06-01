@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+
 
   const handleChange = (e) => {
 
@@ -41,16 +43,25 @@ const Login = () => {
         formData
       );
 
+      console.log(res.data);
+
+      // SAVE TOKEN
       localStorage.setItem(
         "token",
         res.data.token
       );
 
+      // REDIRECT
       navigate("/dashboard");
 
     } catch (error) {
 
-      alert(error.response.data.message);
+      console.log(error);
+
+      alert(
+        error.response?.data?.message ||
+        "Login Failed"
+      );
 
     }
   };
@@ -88,6 +99,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="Enter your email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full bg-transparent p-4 outline-none text-white"
             />
@@ -111,6 +123,7 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Enter your password"
+              value={formData.password}
               onChange={handleChange}
               className="w-full bg-transparent p-4 outline-none text-white"
             />
@@ -131,6 +144,7 @@ const Login = () => {
           </div>
 
           <Link
+            to="#"
             className="text-purple-400 hover:text-pink-400"
           >
             Forgot Password?
@@ -140,6 +154,7 @@ const Login = () => {
 
         {/* BUTTON */}
         <button
+          type="submit"
           className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 transition p-4 rounded-2xl font-semibold flex items-center justify-center gap-3 text-lg"
         >
 

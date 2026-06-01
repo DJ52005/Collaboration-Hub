@@ -10,33 +10,29 @@ import {
 import MainLayout from "../components/layout/MainLayout";
 
 import {
-  Search,
+  Plus,
   Users,
   Layers3,
   ArrowRight,
 } from "lucide-react";
 
 
-const Projects = () => {
+const MyProjects = () => {
 
   const navigate =
     useNavigate();
-
-  const token =
-    localStorage.getItem("token");
 
   const [projects,
     setProjects] =
     useState([]);
 
-  const [search,
-    setSearch] =
-    useState("");
+  const token =
+    localStorage.getItem("token");
 
 
   /*
   =====================================
-  FETCH PROJECTS
+  FETCH MY PROJECTS
   =====================================
   */
 
@@ -49,7 +45,7 @@ const Projects = () => {
 
           const res =
             await axios.get(
-              "http://localhost:5000/api/projects",
+              "http://localhost:5000/api/projects/my-projects",
               {
                 headers: {
                   Authorization:
@@ -72,95 +68,46 @@ const Projects = () => {
   }, []);
 
 
-  /*
-  =====================================
-  FILTER PROJECTS
-  =====================================
-  */
-
-  const filteredProjects =
-    projects.filter(
-      (project) =>
-        project.title
-          ?.toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
-    );
-
-
   return (
 
     <MainLayout>
 
       {/* HEADER */}
 
-      <div>
+      <div className="flex justify-between items-center">
 
-        <h1 className="text-4xl font-bold text-white">
+        <div>
 
-          Explore Projects
+          <h1 className="text-4xl font-bold text-white">
 
-        </h1>
+            My Projects
 
-        <p className="text-slate-400 mt-3">
+          </h1>
 
-          Discover innovative student collaborations
+          <p className="text-slate-400 mt-3">
 
-        </p>
+            Manage your uploaded projects
 
-      </div>
+          </p>
+
+        </div>
 
 
-      {/* SEARCH BAR */}
+        {/* CREATE BUTTON */}
 
-      <div className="mt-8 bg-white/[0.03] border border-white/10 rounded-3xl p-4 flex items-center gap-4">
-
-        <Search className="text-slate-400" />
-
-        <input
-          type="text"
-
-          placeholder="Search projects..."
-
-          value={search}
-
-          onChange={(e) =>
-            setSearch(
-              e.target.value
-            )
+        <button
+          onClick={() =>
+            navigate("/create-project")
           }
 
-          className="bg-transparent outline-none w-full text-white"
-        />
+          className="bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 rounded-2xl flex items-center gap-3 hover:opacity-90 transition"
+        >
 
-      </div>
+          <Plus size={20} />
 
+          Create Project
 
-      {/* FILTER TAGS */}
-
-      <div className="flex gap-3 mt-6 flex-wrap">
-
-        {[
-          "All",
-          "AI/ML",
-          "Web Dev",
-          "Blockchain",
-          "Cybersecurity",
-          "Mobile Apps",
-        ].map((tag) => (
-
-          <button
-            key={tag}
-
-            className="px-5 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-slate-300 hover:bg-purple-600/20 transition"
-          >
-
-            {tag}
-
-          </button>
-
-        ))}
+        </button>
 
       </div>
 
@@ -169,7 +116,7 @@ const Projects = () => {
 
       <div className="grid grid-cols-3 gap-6 mt-10">
 
-        {filteredProjects.map(
+        {projects.map(
           (project) => (
 
             <Link
@@ -256,7 +203,7 @@ const Projects = () => {
 
                 <div>
 
-                  by {project.createdBy?.name}
+                  Owner
 
                 </div>
 
@@ -288,7 +235,7 @@ const Projects = () => {
 
                 <div className="flex items-center gap-2 text-purple-400 font-medium">
 
-                  View Details
+                  Manage Project
 
                   <ArrowRight size={18} />
 
@@ -308,4 +255,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default MyProjects;

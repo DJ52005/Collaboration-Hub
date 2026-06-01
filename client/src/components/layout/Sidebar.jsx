@@ -23,36 +23,49 @@ const Sidebar = () => {
     };
 
     const navItems = [
-        {
-            name: "Dashboard",
-            icon: <LayoutDashboard size={22} />,
-            path: "/dashboard",
-        },
 
-        {
-            name: "Projects",
-            icon: <FolderKanban size={22} />,
-            path: "/projects",
-        },
+  {
+    name: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/dashboard",
+  },
 
-        {
-            name: "Students",
-            icon: <Users size={22} />,
-            path: "/students",
-        },
+  {
+    name: "Projects",
+    icon: FolderKanban,
+    path: "/projects",
+  },
 
-        {
-            name: "Hackathons",
-            icon: <Trophy size={22} />,
-            path: "/hackathons",
-        },
+  {
+    name: "My Projects",
+    icon: FolderKanban,
+    path: "/my-projects",
+  },
 
-        {
-            name: "Chat",
-            icon: <MessageCircle size={22} />,
-            path: "/Chat",
-        },
-    ];
+  {
+    name: "Students",
+    icon: Users,
+    path: "/students",
+  },
+
+  {
+    name: "Hackathons",
+    icon: Trophy,
+    path: "/hackathons",
+  },
+
+  {
+    name: "Chat",
+    icon: MessageCircle,
+    path: "/chat",
+  },
+  {
+  name: "Profile",
+  icon: User,
+  path: "/profile",
+},
+
+];
 
     return (
         <div className="w-[240px] h-screen fixed bg-[#090B1A] border-r border-white/10 flex flex-col justify-between">
@@ -102,7 +115,7 @@ const Sidebar = () => {
                             }
                         >
 
-                            {item.icon}
+                            <item.icon size={22} />
 
                             <span className="text-base font-medium">
                                 {item.name}
